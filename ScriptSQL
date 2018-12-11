@@ -1,0 +1,148 @@
+DROP TABLE IF EXISTS Ingredients ;
+CREATE TABLE Ingredients (IdIngredient_Ingredients INT AUTO_INCREMENT NOT NULL,
+NomIngredient_Ingredients VARCHAR,
+DatePeremptionIngredient_Ingredients DATE,
+TypeIngredient_Ingredients VARCHAR,
+LotIngredient_Ingredients DATETIME,
+QuantiteIngredient_Ingredients INT,
+PRIMARY KEY (IdIngredient_Ingredients)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Plats ;
+CREATE TABLE Plats (IdPlat_Plats INT AUTO_INCREMENT NOT NULL,
+NomPlat_Plats CHAR,
+PortionPlat_Plats INT,
+TempsPreparationPlat_Plats VARCHAR,
+PRIMARY KEY (IdPlat_Plats)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS EtapesPreparation ;
+CREATE TABLE EtapesPreparation (IdEtape_EtapesPreparation INT AUTO_INCREMENT NOT NULL,
+NomEtape_EtapesPreparation CHAR,
+TempsEtape_EtapesPreparation VARCHAR,
+TypeEtape_EtapesPreparation VARCHAR,
+PRIMARY KEY (IdEtape_EtapesPreparation)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS UstensilesPreparation ;
+CREATE TABLE UstensilesPreparation (IdUstensile_UstensilesPreparation INT AUTO_INCREMENT NOT NULL,
+NomUstensile_UstensilesPreparation VARCHAR,
+PRIMARY KEY (IdUstensile_UstensilesPreparation)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS EtatsUstensilesPreparation ;
+CREATE TABLE EtatsUstensilesPreparation (IdEtatUstensile_EtatsUstensilesPreparation BIGINT AUTO_INCREMENT NOT NULL,
+NomEtatUstensile_EtatsUstensilesPreparation VARCHAR,
+IdUstensile_UstensilesPreparation **NOT FOUND**,
+PRIMARY KEY (IdEtatUstensile_EtatsUstensilesPreparation)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Commandes ;
+CREATE TABLE Commandes (IdCommande_Commandes INT AUTO_INCREMENT NOT NULL,
+PRIMARY KEY (IdCommande_Commandes)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Tables ;
+CREATE TABLE Tables (IdTable_Tables BIGINT AUTO_INCREMENT NOT NULL,
+TypeTable_Tables BIGINT,
+EtatTable_Tables BOOL,
+NombrePersonneTable_Tables INT,
+IdCommande_Commandes **NOT FOUND**,
+linges_nomlinge_linges **NOT FOUND**,
+PRIMARY KEY (IdTable_Tables)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Vins ;
+CREATE TABLE Vins (IdVin_Vins INT AUTO_INCREMENT NOT NULL,
+NomVins_Vins VARCHAR,
+QuantiteVins_Vins INT,
+PRIMARY KEY (IdVin_Vins)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS CategoriePlat ;
+CREATE TABLE CategoriePlat (IdCategoriePlat_CategoriePlat INT AUTO_INCREMENT NOT NULL,
+NomCategoriePlat_CategoriePlat VARCHAR,
+IdPlat_Plats **NOT FOUND**,
+PRIMARY KEY (IdCategoriePlat_CategoriePlat)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Vaisselles ;
+CREATE TABLE Vaisselles (IdVaisselle_Vaisselles INT AUTO_INCREMENT NOT NULL,
+QuantiteVaisselle_Vaisselles BIGINT,
+PRIMARY KEY (IdVaisselle_Vaisselles)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS EtatsVaisselle ;
+CREATE TABLE EtatsVaisselle (IdEtatVaisselle_EtatsVaisselle INT AUTO_INCREMENT NOT NULL,
+NomEtatVaisselle_EtatsVaisselle VARCHAR,
+IdVaisselle_Vaisselles **NOT FOUND**,
+PRIMARY KEY (IdEtatVaisselle_EtatsVaisselle)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS TypesVaisselle ;
+CREATE TABLE TypesVaisselle (IdTypeVaisselle_TypesVaisselle INT AUTO_INCREMENT NOT NULL,
+NomVaisselle_TypesVaisselle CHAR,
+IdVaisselle_Vaisselles **NOT FOUND**,
+PRIMARY KEY (IdTypeVaisselle_TypesVaisselle)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Linges ;
+CREATE TABLE Linges (NomLinge_Linges CHAR AUTO_INCREMENT NOT NULL,
+QuantiteLinge_Linges BIGINT,
+tables_idtable_tables **NOT FOUND**,
+PRIMARY KEY (NomLinge_Linges)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS EtatLinge ;
+CREATE TABLE EtatLinge (IdEtatLinge_EtatLinge BIGINT AUTO_INCREMENT NOT NULL,
+NomEtatLinge_EtatLinge CHAR,
+NomLinge_Linges **NOT FOUND**,
+PRIMARY KEY (IdEtatLinge_EtatLinge)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Constituer ;
+CREATE TABLE Constituer (IdPlat_Plats **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdIngredient_Ingredients **NOT FOUND** NOT NULL,
+QuantiteIngredientPlat_Constituer INT,
+PRIMARY KEY (IdPlat_Plats,
+ IdIngredient_Ingredients)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS UtiliserUstensile ;
+CREATE TABLE UtiliserUstensile (IdUstensile_UstensilesPreparation **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdEtape_EtapesPreparation **NOT FOUND** NOT NULL,
+PRIMARY KEY (IdUstensile_UstensilesPreparation,
+ IdEtape_EtapesPreparation)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Inclure ;
+CREATE TABLE Inclure (IdEtape_EtapesPreparation **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdPlat_Plats **NOT FOUND** NOT NULL,
+PRIMARY KEY (IdEtape_EtapesPreparation,
+ IdPlat_Plats)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Composer ;
+CREATE TABLE Composer (IdPlat_Plats **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdCommande_Commandes **NOT FOUND** NOT NULL,
+QuantitePlatCommande_Composer INT,
+PRIMARY KEY (IdPlat_Plats,
+ IdCommande_Commandes)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Accompagner ;
+CREATE TABLE Accompagner (IdCommande_Commandes **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdVin_Vins **NOT FOUND** NOT NULL,
+QuantiteVinsCommande_Accompagner INT,
+PRIMARY KEY (IdCommande_Commandes,
+ IdVin_Vins)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS UtiliserVaisselle ;
+CREATE TABLE UtiliserVaisselle (IdCommande_Commandes **NOT FOUND** AUTO_INCREMENT NOT NULL,
+IdVaisselle_Vaisselles **NOT FOUND** NOT NULL,
+PRIMARY KEY (IdCommande_Commandes,
+ IdVaisselle_Vaisselles)) ENGINE=InnoDB;
+
+ALTER TABLE EtatsUstensilesPreparation ADD CONSTRAINT FK_EtatsUstensilesPreparation_IdUstensile_UstensilesPreparation FOREIGN KEY (IdUstensile_UstensilesPreparation) REFERENCES UstensilesPreparation (IdUstensile_UstensilesPreparation);
+
+ALTER TABLE Tables ADD CONSTRAINT FK_Tables_IdCommande_Commandes FOREIGN KEY (IdCommande_Commandes) REFERENCES Commandes (IdCommande_Commandes);
+ALTER TABLE Tables ADD CONSTRAINT FK_Tables_linges_nomlinge_linges FOREIGN KEY (linges_nomlinge_linges) REFERENCES Linges (NomLinge_Linges);
+ALTER TABLE CategoriePlat ADD CONSTRAINT FK_CategoriePlat_IdPlat_Plats FOREIGN KEY (IdPlat_Plats) REFERENCES Plats (IdPlat_Plats);
+ALTER TABLE EtatsVaisselle ADD CONSTRAINT FK_EtatsVaisselle_IdVaisselle_Vaisselles FOREIGN KEY (IdVaisselle_Vaisselles) REFERENCES Vaisselles (IdVaisselle_Vaisselles);
+ALTER TABLE TypesVaisselle ADD CONSTRAINT FK_TypesVaisselle_IdVaisselle_Vaisselles FOREIGN KEY (IdVaisselle_Vaisselles) REFERENCES Vaisselles (IdVaisselle_Vaisselles);
+ALTER TABLE Linges ADD CONSTRAINT FK_Linges_tables_idtable_tables FOREIGN KEY (tables_idtable_tables) REFERENCES Tables (IdTable_Tables);
+ALTER TABLE EtatLinge ADD CONSTRAINT FK_EtatLinge_NomLinge_Linges FOREIGN KEY (NomLinge_Linges) REFERENCES Linges (NomLinge_Linges);
+ALTER TABLE Constituer ADD CONSTRAINT FK_Constituer_IdPlat_Plats FOREIGN KEY (IdPlat_Plats) REFERENCES Plats (IdPlat_Plats);
+ALTER TABLE Constituer ADD CONSTRAINT FK_Constituer_IdIngredient_Ingredients FOREIGN KEY (IdIngredient_Ingredients) REFERENCES Ingredients (IdIngredient_Ingredients);
+ALTER TABLE UtiliserUstensile ADD CONSTRAINT FK_UtiliserUstensile_IdUstensile_UstensilesPreparation FOREIGN KEY (IdUstensile_UstensilesPreparation) REFERENCES UstensilesPreparation (IdUstensile_UstensilesPreparation);
+ALTER TABLE UtiliserUstensile ADD CONSTRAINT FK_UtiliserUstensile_IdEtape_EtapesPreparation FOREIGN KEY (IdEtape_EtapesPreparation) REFERENCES EtapesPreparation (IdEtape_EtapesPreparation);
+ALTER TABLE Inclure ADD CONSTRAINT FK_Inclure_IdEtape_EtapesPreparation FOREIGN KEY (IdEtape_EtapesPreparation) REFERENCES EtapesPreparation (IdEtape_EtapesPreparation);
+ALTER TABLE Inclure ADD CONSTRAINT FK_Inclure_IdPlat_Plats FOREIGN KEY (IdPlat_Plats) REFERENCES Plats (IdPlat_Plats);
+ALTER TABLE Composer ADD CONSTRAINT FK_Composer_IdPlat_Plats FOREIGN KEY (IdPlat_Plats) REFERENCES Plats (IdPlat_Plats);
+ALTER TABLE Composer ADD CONSTRAINT FK_Composer_IdCommande_Commandes FOREIGN KEY (IdCommande_Commandes) REFERENCES Commandes (IdCommande_Commandes);
+ALTER TABLE Accompagner ADD CONSTRAINT FK_Accompagner_IdCommande_Commandes FOREIGN KEY (IdCommande_Commandes) REFERENCES Commandes (IdCommande_Commandes);
+ALTER TABLE Accompagner ADD CONSTRAINT FK_Accompagner_IdVin_Vins FOREIGN KEY (IdVin_Vins) REFERENCES Vins (IdVin_Vins);
+ALTER TABLE UtiliserVaisselle ADD CONSTRAINT FK_UtiliserVaisselle_IdCommande_Commandes FOREIGN KEY (IdCommande_Commandes) REFERENCES Commandes (IdCommande_Commandes);
+ALTER TABLE UtiliserVaisselle ADD CONSTRAINT FK_UtiliserVaisselle_IdVaisselle_Vaisselles FOREIGN KEY (IdVaisselle_Vaisselles) REFERENCES Vaisselles (IdVaisselle_Vaisselles);
